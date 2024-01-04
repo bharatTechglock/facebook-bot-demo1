@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Form</title>
+</head>
+
+<body>
+  <h1>WhatsApp Form</h1>
+  <form id="whatsappForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone" required pattern="[0-9]{10,15}">
+
+    <button type="button" onclick="submitForm()">Submit</button>
+  </form>
+
+  <script>
+    function submitForm() {
+      // Get the form data
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      // Create a FormData object and append form data
+      const formData = {
+        "name": name,
+        "phone": phone
+      };
+
+      // Use fetch to send a POST request to the server
+      fetch('/submit-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json' // Specify the content type as JSON
+        },
+        body: JSON.stringify(formData) // Convert the object to a JSON string
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response if needed
+        console.log(data);
+        alert('Form submitted successfully!');
+      })
+      .catch(error => {
+        // Handle the error if the request fails
+        console.error('Error submitting form:', error.message);
+        alert('Error submitting form. Please try again later.');
+      });
+    }
+  </script>
+</body>
+
+</html>
