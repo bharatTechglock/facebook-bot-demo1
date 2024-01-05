@@ -7,39 +7,49 @@ const {
   simpleReturn,
   orderConfirm,
   startTemplate,
-  productCatalougeTemplate
+  productCatalougeTemplate,
+  list_product_item,
+  consumer_product,
+  item_pepsico
 } = require('./messageTemplateHelper');
 
 const openaiApiKey = process.env.OPENAI_API_KEY || "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";
 const openaiEndpoint = process.env.OPENAI_ENDPOINT || 'https://api.openai.com/v1/chat/completions';
 const version = process.env.VERSION || 'v17.0';
 const phoneNumberId = process.env.PHONE_NUMBER_ID || 194561167073611;
-const whatsappToken = process.env.WHATSAPP_TOKEN || 'EAAKIFZCG0RDwBO2Jf57WRc1p388r67x8BfIJkoQCo52LxpwKtIFzMYeQDIv7SL19v65SyoU25Yz1y1BL6XqCIAThwhFFTvu3ehXiGbhvNyIjnMU0C9HV13fwfnj8ZCCvUTj7AZAMgCB8fsMs5xPqE56GZAWGtZBsVZB65xjxZCfWLbhdNMc0ey6cZBJeMPDOMdnghKtZCMa4e9zQOeuZCg8GKrFwla2hqgMEgRd3xi8FCYIGAZD';
+const whatsappToken = process.env.WHATSAPP_TOKEN || 'EAAKIFZCG0RDwBOxalGhWcjB79w8p8oZAE4aVFU7V5oHlkorg1aZBgZC50vN5crmBphex0IZBpeIFWTusAORqKrshMBW0tfQiYGyHMPNY9zT9Xvr4elDMsQrd11JBhIi61AgKtu1tBcdrumXvKagqNO0cNni6ThWst627I98PirRJ1UFNNZAwfeAKzCzzWSQ1tl2QC7bzZBxT8DV0cNMMZBOr1alErCagSVf36cN4ZCCntnJXK';
 
 const replyMessage = async (senderFromId, reqMessage, res) => {
   try {
     const userQuery = reqMessage;
-    const openaiResponse = await sendMessageToOpenAI([{
-      role: 'user',
-      content: userQuery
-    }]);
+    // console.log(reqMessage); return false;
+    // const openaiResponse = await sendMessageToOpenAI([{
+    //   role: 'user',
+    //   content: userQuery
+    // }]);
 
     // Call replyMessage and wait for it to complete
     let dataReceived = {};
-    // if (userQuery == 'Hi' || userQuery == 'Hello') {
-    //   dataReceived = await welcomeMessageTemplate(senderFromId);
-    // } else if (userQuery == 'food order' || userQuery == 'interested') {
-    //   dataReceived = await getTemplatedFoodOrder(senderFromId, '5864');
-    // } else if (userQuery == 'Order') {
-    //   dataReceived = await orderConfirm(senderFromId);
-    // } else if (userQuery == 'Not interested' || userQuery == 'not interested') {
-    //   dataReceived = await visitWebsite(senderFromId);
-    // } else if (userQuery == 'form submit') {
-    //   const dataReceived1 = await startTemplate(senderFromId);
-    //   await sendFacebookMessage(dataReceived1);
-    // } else {
-      dataReceived = await productCatalougeTemplate(senderFromId);
-    // }
+    if (userQuery == 'Hi' || userQuery == 'Hello') {
+      dataReceived = await welcomeMessageTemplate(senderFromId);
+    } else if (userQuery == 'food order') {
+      dataReceived = await getTemplatedFoodOrder(senderFromId, '5864');
+    } else if (userQuery == 'Pepsico') {
+      dataReceived = await item_pepsico(senderFromId, '0025');
+    } else if (userQuery == 'interested') {
+      dataReceived = await list_product_item(senderFromId);
+    } else if (userQuery == 'consumer' || userQuery == 1) {
+      dataReceived = await consumer_product(senderFromId);
+    } else if (userQuery == 'Order') {
+      dataReceived = await orderConfirm(senderFromId);
+    } else if (userQuery == 'Not interested' || userQuery == 'not interested') {
+      dataReceived = await visitWebsite(senderFromId);
+    } else if (userQuery == 'form submit') {
+      const dataReceived1 = await startTemplate(senderFromId);
+      await sendFacebookMessage(dataReceived1);
+    } else {
+      dataReceived = await getTextMessageInput(senderFromId);
+    }
     // const senderId = senderFromId;
     // const dataReceived = await getTextMessageInput(senderFromId, openaiResponse);
 

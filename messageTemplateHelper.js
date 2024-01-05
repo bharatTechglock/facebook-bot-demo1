@@ -6,7 +6,7 @@ async function getTextMessageInput(recipient, text) {
         to: recipient,
         type: "text",
         text: {
-            body: text
+            body: text || 'Hello'
         }
     };
 }
@@ -69,6 +69,62 @@ function getTemplatedFoodOrder(recipient, orderId) {
                     "parameters": [{
                         "type": "payload",
                         "payload": "Thank you for creating order your order is confirmed!,Order id : " + orderId
+                    }]
+                }
+            ]
+        }
+    };
+
+}
+function item_pepsico(recipient,orderId) {
+    return {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": recipient,
+        "type": "template",
+        "template": {
+            "name": "item_pepsico",
+            "language": {
+                "code": "en"
+            },
+            "components": [{
+                    "type": "header",
+                    "parameters": [{
+                        "type": "image",
+                        "image": {
+                            "link": "https://www.reuters.com/resizer/MnJZRyaRPG8Es56acgAWj9fPAy0=/960x0/filters:quality(80)/cloudfront-us-east-2.images.arcpublishing.com/reuters/FRMSIG573NP7XJ3KQWR33H3V64.jpg"
+                        }
+                    }]
+                },
+                {
+                    "type": "body",
+                    "parameters": [{
+                            "type": "text",
+                            "text": "Dimple Food "
+                        },
+                        {
+                            "type": "currency",
+                            "currency": {
+                                "fallback_value": "VALUE",
+                                "code": "USD",
+                                "amount_1000": 500
+                            }
+                        },
+                        {
+                            "type": "date_time",
+                            "date_time": {
+                                "fallback_value": "Feb 29, 2024"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "button",
+                    "sub_type": "quick_reply",
+                    "index": "1",
+                    "parameters": [{
+                        "type": "payload",
+                        "payload": "Thank you for buy our product.your order is confirmed!,Order id : " + orderId
                     }]
                 }
             ]
@@ -212,6 +268,50 @@ function startTemplate(recipient, text) {
     }
 }
 
+function list_product_item(recipient) {
+    return {
+        messaging_product: "whatsapp",
+        to: recipient,
+        type: "template",
+        template: {
+            name: "list_product_item",
+            language: {
+                "code": "en"
+            }
+        }
+    }
+}
+
+function consumer_product(recipient) {
+    return {
+        messaging_product: "whatsapp",
+        to: recipient,
+        type: "template",
+        template: {
+            name: "consumer_product",
+            language: {
+                "code": "en"
+            },
+            components: [
+                {
+                    "type": "body",
+                    "parameters": [
+                        {
+                            "type": "text",
+                            "text": "https://www.pepsicoindia.co.in/"
+                        },
+                        {
+                            "type": "text",
+                            "text": "https://www.nestle.in/"
+                        }
+                    ]
+                }
+            ]
+        }
+    };
+}
+
+
 function productCatalougeTemplate(recipient, text) {
     return {
         messaging_product: "whatsapp",
@@ -231,6 +331,20 @@ function productCatalougeTemplate(recipient, text) {
     }
 }
 
+function hello_world(recipient) {
+    return {
+        messaging_product: "whatsapp",
+        to: recipient,
+        type: "template",
+        template: {
+            name: "hello_world",
+            language: {
+                "code": "en_US"
+            }
+        }
+    }
+}
+
 module.exports = {
     getTextMessageInput,
     getTemplatedFoodOrder,
@@ -240,5 +354,9 @@ module.exports = {
     simpleReturn,
     orderConfirm,
     startTemplate,
-    productCatalougeTemplate
+    productCatalougeTemplate,
+    hello_world,
+    list_product_item,
+    consumer_product,
+    item_pepsico
 };
