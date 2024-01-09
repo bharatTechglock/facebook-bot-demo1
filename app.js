@@ -16,9 +16,16 @@ const {
 const dbName = './db.json';
 const path = require('path'); 
 const { handleFormSubmission } = require('./formHandler');
+
+
 app.use(body_parser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(body_parser.urlencoded({ extended: true }));
+
+// Add this route to serve the product list page
+app.get('/product-list', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'product-list.html'));
+});
 
 
 // Route for handling form submissions

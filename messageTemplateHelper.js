@@ -76,7 +76,8 @@ function getTemplatedFoodOrder(recipient, orderId) {
     };
 
 }
-function item_pepsico(recipient,orderId) {
+
+async function item_pepsico(recipient, productDetails) {
     return {
         "messaging_product": "whatsapp",
         "recipient_type": "individual",
@@ -92,7 +93,7 @@ function item_pepsico(recipient,orderId) {
                     "parameters": [{
                         "type": "image",
                         "image": {
-                            "link": "https://www.reuters.com/resizer/MnJZRyaRPG8Es56acgAWj9fPAy0=/960x0/filters:quality(80)/cloudfront-us-east-2.images.arcpublishing.com/reuters/FRMSIG573NP7XJ3KQWR33H3V64.jpg"
+                            "link": `${productDetails.image}`
                         }
                     }]
                 },
@@ -100,32 +101,70 @@ function item_pepsico(recipient,orderId) {
                     "type": "body",
                     "parameters": [{
                             "type": "text",
-                            "text": "Dimple Food "
+                            "text": `${productDetails.title}`
                         },
                         {
                             "type": "currency",
                             "currency": {
-                                "fallback_value": "VALUE",
+                                "fallback_value": `${productDetails.price}`,
                                 "code": "USD",
-                                "amount_1000": 500
+                                "amount_1000": Math.round(productDetails.price * 1000)
                             }
                         },
                         {
                             "type": "date_time",
                             "date_time": {
-                                "fallback_value": "Feb 29, 2024"
+                                "fallback_value": "Jan 31, 2024"
                             }
                         }
                     ]
                 },
                 {
                     "type": "button",
-                    "sub_type": "quick_reply",
-                    "index": "1",
+                    "sub_type": "url",
+                    "index": "0",
                     "parameters": [{
-                        "type": "payload",
-                        "payload": "Thank you for buy our product.your order is confirmed!,Order id : " + orderId
+                        "type": "text",
+                        "text": `https://fakestoreapi.com/products/${productDetails.id}`
                     }]
+                }
+            ]
+        }
+    };
+}
+
+function orderPdfInvoice(recipient) {
+    return {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": recipient,
+        "type": "template",
+        "template": {
+            "name": "order_pdf",
+            "language": {
+                "code": "en"
+            },
+            "components": [{
+                    "type": "header",
+                    "parameters": [{
+                        "type": "document",
+                        "document": {
+                            "id": "https://slicedinvoices.com/pdf/wordpress-pdf-invoice-plugin-sample.pdf",
+                            "filename": "wordpress-pdf-invoice-plugin-sample.pdf"
+                        }
+                    }]
+                },
+                {
+                    "type": "body",
+                    "parameters": [{
+                            "type": "text",
+                            "text": "Bharat"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Dimple Food Shop"
+                        }
+                    ]
                 }
             ]
         }
@@ -292,21 +331,18 @@ function consumer_product(recipient) {
             language: {
                 "code": "en"
             },
-            components: [
-                {
-                    "type": "body",
-                    "parameters": [
-                        {
-                            "type": "text",
-                            "text": "https://www.pepsicoindia.co.in/"
-                        },
-                        {
-                            "type": "text",
-                            "text": "https://www.nestle.in/"
-                        }
-                    ]
-                }
-            ]
+            components: [{
+                "type": "body",
+                "parameters": [{
+                        "type": "text",
+                        "text": "http://localhost:1337/product-list/"
+                    },
+                    {
+                        "type": "text",
+                        "text": "https://www.nestle.in/"
+                    }
+                ]
+            }]
         }
     };
 }
@@ -358,5 +394,6 @@ module.exports = {
     hello_world,
     list_product_item,
     consumer_product,
-    item_pepsico
+    item_pepsico,
+    orderPdfInvoice
 };

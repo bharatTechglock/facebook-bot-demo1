@@ -24,11 +24,13 @@
       // Get the form data
       const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
+      // console.log(name,phone); return false;
       // Create a FormData object and append form data
       const formData = {
         "name": name,
         "phone": phone
       };
+      // console.log(formData); return false;
 
       // Use fetch to send a POST request to the server
       fetch('/submit-form', {
@@ -52,5 +54,4 @@
     }
   </script>
 </body>
-
 </html>
