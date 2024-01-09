@@ -1,8 +1,8 @@
 # Ignore .env file
-.env
+/.env
 
 # Ignore node_modules directory
-node_modules
+/node_modules
 
 # Ignore other files or directories if needed
 .config
